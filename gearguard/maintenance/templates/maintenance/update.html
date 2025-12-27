@@ -1,0 +1,30 @@
+{% extends 'maintenance/base.html' %}
+{% block content %}
+
+<h3 class="mb-3">✏️ Update Maintenance Request</h3>
+
+<form method="post" class="card p-4 shadow bg-white">
+{% csrf_token %}
+
+<label class="fw-bold">Subject</label>
+<input type="text" name="subject" value="{{ req.subject }}" class="form-control mb-3">
+
+<label class="fw-bold">Status</label>
+<select name="status" class="form-control mb-3">
+<option {% if req.status == "New" %}selected{% endif %}>New</option>
+<option {% if req.status == "In Progress" %}selected{% endif %}>In Progress</option>
+<option {% if req.status == "Repaired" %}selected{% endif %}>Repaired</option>
+<option {% if req.status == "Scrap" %}selected{% endif %}>Scrap</option>
+</select>
+
+<label class="fw-bold">Type</label>
+<select name="request_type" class="form-control mb-3">
+<option {% if req.request_type == "Corrective" %}selected{% endif %}>Corrective</option>
+<option {% if req.request_type == "Preventive" %}selected{% endif %}>Preventive</option>
+</select>
+
+<button class="btn btn-dark">Update</button>
+<a href="/" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

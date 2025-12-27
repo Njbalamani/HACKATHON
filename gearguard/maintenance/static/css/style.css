@@ -1,0 +1,24 @@
+.draggable {
+    cursor: grab;
+    transition: transform 0.2s;
+}
+.draggable:hover {
+    transform: scale(1.05);
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.board {
+    min-height: 400px;
+}
+
+.task {
+    cursor: grab;
+    transition: all 0.2s ease;
+}
+
+.task:hover {
+    transform: scale(1.05);
+    background-color: #f1f1f1;
+}

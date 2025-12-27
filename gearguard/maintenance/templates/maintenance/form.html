@@ -1,0 +1,49 @@
+{% extends 'maintenance/base.html' %}
+{% block content %}
+
+<h3 class="mb-3">➕ Create Maintenance Request</h3>
+
+<form method="post" class="card p-4 shadow bg-white">
+{% csrf_token %}
+
+<label class="fw-bold">Subject</label>
+<input type="text" name="subject" class="form-control mb-3" required>
+
+<label class="fw-bold">Equipment</label>
+<select name="equipment" id="equipment" class="form-control mb-3" required>
+<option value="">Select Equipment</option>
+{% for e in equipment %}
+<option value="{{ e.id }}" data-team="{{ e.team.id }}">
+{{ e.name }}
+</option>
+{% endfor %}
+</select>
+
+<label class="fw-bold">Maintenance Team (Auto)</label>
+<select name="team" id="team" class="form-control mb-3" required>
+<option value="">Auto-filled</option>
+{% for t in teams %}
+<option value="{{ t.id }}">{{ t.name }}</option>
+{% endfor %}
+</select>
+
+<label class="fw-bold">Type</label>
+<select name="request_type" class="form-control mb-3">
+<option>Corrective</option>
+<option>Preventive</option>
+</select>
+
+<label class="fw-bold">Scheduled Date</label>
+<input type="date" name="scheduled_date" class="form-control mb-3">
+
+<button class="btn btn-dark">Create Request</button>
+</form>
+
+<script>
+document.getElementById("equipment").addEventListener("change", function(){
+    const teamId = this.options[this.selectedIndex].dataset.team;
+    document.getElementById("team").value = teamId;
+});
+</script>
+
+{% endblock %}

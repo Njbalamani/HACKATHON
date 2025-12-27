@@ -1,0 +1,76 @@
+{% extends 'maintenance/base.html' %}
+{% block content %}
+
+<style>
+.kanban {
+    display: flex;
+    gap: 20px;
+}
+.column {
+    width: 25%;
+    background: #f4f6f9;
+    padding: 15px;
+    border-radius: 10px;
+}
+.card {
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.actions a {
+    margin-right: 5px;
+}
+</style>
+
+<h2 class="mb-4">🛠 Maintenance Kanban Board</h2>
+
+<div class="kanban">
+{% for stage in stages %}
+    <div class="column">
+        <h4>{{ stage }}</h4>
+
+        {% for r in requests %}
+            {% if r.status == stage %}
+            <div class="card">
+                <strong>{{ r.item_name }}</strong><br>
+                <small>{{ r.issue }}</small>
+
+                <div class="actions mt-2">
+                    <!-- Edit -->
+                    <a href="/update/{{ r.id }}/"
+                       class="btn btn-sm btn-outline-primary">
+                       ✏️
+                    </a>
+
+                    <!-- Delete -->
+                    <a href="/delete/{{ r.id }}/"
+                       onclick="return confirm('Delete this request?');"
+                       class="btn btn-sm btn-outline-danger">
+                       🗑️
+                    </a>
+                    {% if is_maintenance %}
+                        {% if r.status != "Repaired" %}
+                        <a href="/update/{{ r.id }}/?status=Repaired"
+                           class="btn btn-sm btn-outline-success">
+                           ✔ Repair
+                        </a>
+                        {% endif %}
+
+                        {% if r.status != "Scrap" %}
+                        <a href="/update/{{ r.id }}/?status=Scrap"
+                           class="btn btn-sm btn-outline-warning">
+                           🗑 Scrap
+                        </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}
